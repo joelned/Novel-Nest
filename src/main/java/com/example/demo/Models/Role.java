@@ -1,11 +1,16 @@
 package com.example.demo.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Table
 @Entity
 public class Role {
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
+    private int roleId;
+    private String name;
 }
