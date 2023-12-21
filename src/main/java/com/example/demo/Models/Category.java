@@ -1,19 +1,18 @@
 package com.example.demo.Models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-@Table
 @Entity
-public class Book {
+@Table
+@Data
+@AllArgsConstructor
+public class Category {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-    private int bookId;
-    private String bookName;
-    private String category;
-    private String author;
-
+    private int categoryId;
+    private String categoryName;
 }
