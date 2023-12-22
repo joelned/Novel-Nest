@@ -12,8 +12,9 @@ public class Book {
             strategy = GenerationType.IDENTITY
     )
     private int bookId;
-    private String bookName;
+    private String title;
     private String category;
     private String author;
+
 
 }
