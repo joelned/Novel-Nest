@@ -6,7 +6,6 @@ import com.example.demo.Repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,5 +76,15 @@ public class BookController {
         }
         bookRepository.deleteById(bookId);
         return new ResponseEntity<>("Book removed successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{category}")
+    public ResponseEntity<List<Book>> searchByCategory(@PathVariable String category){
+        List<Book>bookByCategory = bookRepository.findByCategoryIgnoreCase(category);
+        if(bookByCategory.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(bookByCategory, HttpStatus.OK);
+
     }
 }
