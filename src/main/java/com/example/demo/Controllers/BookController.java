@@ -65,7 +65,7 @@ public class BookController {
         book.setCategory(bookDTO.getCategory());
         book.setAuthor(bookDTO.getAuthor());
         bookRepository.save(book);
-        return new ResponseEntity<>("Book added successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Book added successfully", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove-book/{bookId}")
