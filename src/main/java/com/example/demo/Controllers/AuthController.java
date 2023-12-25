@@ -44,18 +44,18 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setUsername(registerDTO.getUsername());
         Role role = roleRepository.findByName("USER");
-        userEntity.setRole(Collections.singletonList(role));
-        userRepository.save(userEntity);
+        user.setRole(Collections.singletonList(role));
+        userRepository.save(user);
         return new ResponseEntity<>("Registration Successful", HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String>login(@RequestBody LoginDTO loginDTO){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDTO.getUsername(), loginDTO.getUsername()
-        ));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
+        Authentication authentication = authenticationManager.authenticate
+                (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ResponseEntity<>("Login Successful", HttpStatus.OK);
     }
 }
