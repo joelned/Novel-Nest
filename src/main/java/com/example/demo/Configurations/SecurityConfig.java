@@ -1,6 +1,4 @@
 package com.example.demo.Configurations;
-
-
 import com.example.demo.Services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

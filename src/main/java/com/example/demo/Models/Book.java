@@ -1,8 +1,6 @@
 package com.example.demo.Models;
-
 import jakarta.persistence.*;
 import lombok.Data;
-
 @Data
 @Table
 @Entity
@@ -15,6 +13,4 @@ public class Book {
     private String title;
     private String category;
     private String author;
-
-
 }

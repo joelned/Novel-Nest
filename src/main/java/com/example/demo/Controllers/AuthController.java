@@ -1,11 +1,13 @@
 package com.example.demo.Controllers;
-
 import com.example.demo.DTOs.LoginDTO;
 import com.example.demo.DTOs.RegisterDTO;
 import com.example.demo.Models.Role;
 import com.example.demo.Models.UserEntity;
 import com.example.demo.Repositories.RoleRepository;
 import com.example.demo.Repositories.UserRepository;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collections;
 
 @RestController
@@ -25,6 +26,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public AuthController(UserRepository userRepository, AuthenticationManager authenticationManager, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -34,10 +36,12 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO){
         UserEntity userEntity = userRepository.findByUsername(registerDTO.getUsername());
         if(userEntity != null){
+            logger.warn("User " + registerDTO.getUsername() +" Already Exists");
             return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
         }
         UserEntity user = new UserEntity();
@@ -46,10 +50,9 @@ public class AuthController {
         Role role = roleRepository.findByName("USER");
         user.setRole(Collections.singletonList(role));
         userRepository.save(user);
+        logger.info("New user "+ user.getUsername()+ " registered successfully");
         return new ResponseEntity<>("Registration Successful", HttpStatus.OK);
     }
-
-
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){

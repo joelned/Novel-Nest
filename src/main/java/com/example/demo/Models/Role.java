@@ -1,8 +1,6 @@
 package com.example.demo.Models;
-
 import jakarta.persistence.*;
 import lombok.Data;
-
 @Data
 @Table
 @Entity

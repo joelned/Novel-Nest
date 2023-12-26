@@ -2,7 +2,6 @@ package com.example.demo.Models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.List;
 
 @Data
