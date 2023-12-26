@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @RestController
@@ -114,26 +115,55 @@ public class BookController {
        }
     }
 
-    @GetMapping("/search/category/{category}")
-    public ResponseEntity<List<Book>> searchByCategory(@PathVariable String category){
-        List<Book>bookByCategory = bookRepository.findByCategoryIgnoreCase(category);
-        if(bookByCategory.isEmpty()){
-            logger.error("Book category doesn't exist or is empty.");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        logger.info("Book(s) from "+ category + " category successfully fetched.");
-        return new ResponseEntity<>(bookByCategory, HttpStatus.OK);
-
-    }
     @GetMapping("/search/author/{author}")
-    public ResponseEntity<List<Book>> searchByAuthor(@PathVariable String author){
-        List<Book>bookByAuthor = bookRepository.findByAuthorIgnoreCase(author);
-        if(bookByAuthor.isEmpty()){
-            logger.error("Book Author " + author +" isn't present in database.");
+    public ResponseEntity<List<Book>> searchByAuthor(@PathVariable String author) {
+        try {
+            List<Book> allBooks = bookRepository.findAll();
+            List<Book> matchingBooks = new ArrayList<>();
+
+            for (Book book : allBooks) {
+                // Check if the author's name contains the specified substring (case-insensitive)
+                if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) {
+                    matchingBooks.add(book);
+                }
+            }
+
+            if (matchingBooks.isEmpty()) {
+                logger.error("No books found for the author containing: " + author);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            logger.info("Books with authors containing " + author + " successfully fetched.");
+            return new ResponseEntity<>(matchingBooks, HttpStatus.OK);
+        }
+        catch(Exception e){
+            logger.error("Error: " + e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        logger.info("Book(s) written by "+ author + " successfully fetched.");
-        return new ResponseEntity<>(bookByAuthor, HttpStatus.OK);
-
     }
+
+    @GetMapping("/search/category/{category}")
+    public ResponseEntity<List<Book>>getCategory(@PathVariable String category) {
+        try {
+            List<Book> books = bookRepository.findAll();
+            List<Book> matchingBooks = new ArrayList<>();
+
+            for (Book book : books) {
+                if (book.getAuthor().toLowerCase().contains(category.toLowerCase())) {
+                    matchingBooks.add(book);
+                }
+            }
+            if (matchingBooks.isEmpty()) {
+                logger.info("No category matching search " + category);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            logger.info("Category search " + category + " successful");
+            return new ResponseEntity<>(matchingBooks, HttpStatus.OK);
+        }
+        catch(Exception e){
+            logger.error("Error "+ e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

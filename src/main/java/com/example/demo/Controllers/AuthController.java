@@ -5,6 +5,7 @@ import com.example.demo.Models.Role;
 import com.example.demo.Models.UserEntity;
 import com.example.demo.Repositories.RoleRepository;
 import com.example.demo.Repositories.UserRepository;
+import com.example.demo.Services.TokenService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +27,16 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    public AuthController(UserRepository userRepository, AuthenticationManager authenticationManager, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, AuthenticationManager authenticationManager, RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     @Transactional
@@ -59,6 +62,9 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("Login Successful", HttpStatus.OK);
+        String token = tokenService.generateToken(authentication);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
+
+
 }
