@@ -29,6 +29,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final RsaKeyProperties rsakeys;
 
+
     @Autowired
     public SecurityConfig(CustomUserDetailsService customUserDetailsService, RsaKeyProperties rsakeys) {
         this.customUserDetailsService = customUserDetailsService;
