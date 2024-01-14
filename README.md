@@ -64,16 +64,10 @@ cd virtual-book-store-api(folder the repository was cloned).
 This API uses JWT authentication with OAuth2 Resource Server. Make sure to include the JWT token in the Authorization header for secured endpoints.
 
 ## Models
-### Book:
-Attributes: Title, Author, Category.      
+### Book
+### Review  
+### Role
+### User
 
-### Review:
-Attributes: User, Book, Rating, Comment, etc.    
-
-### Role:
-Attributes: Name (e.g., ROLE_USER, ROLE_ADMIN).   
-
-### User:
-Attributes: Username, Password, Roles.
 
 
