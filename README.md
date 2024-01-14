@@ -61,7 +61,8 @@ cd virtual-book-store-api(folder the repository was cloned).
 - Description: Removes a specific book. Requires admin privileges.
 
 ## Authentication
-This API uses JWT authentication with OAuth2 Resource Server. Make sure to include the JWT token in the Authorization header for secured endpoints.
+This API uses JWT authentication with OAuth2 Resource Server. Make sure to include the JWT token in the Authorization header for secured endpoints. Make sure to generate   
+your own cryptographic keys using Openssl or any other cryptographic library.   
 
 ## Models
 ### Book
