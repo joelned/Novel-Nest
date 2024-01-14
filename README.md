@@ -24,7 +24,7 @@ Before running this project, ensure that you have the following installed:
 ## Getting Started
 
 ### Clone the Repository
-git clone https://github.com/your-username/virtual-book-store-api.git   
+git clone https://github.com/joelned/virtual-book-store-api.git   
 cd virtual-book-store-api(folder the repository was cloned).
 
 ### Build and Run
