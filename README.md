@@ -70,5 +70,3 @@ your own cryptographic keys using Openssl or any other cryptographic library.
 ### Role
 ### User
 
-
-## How To Use This API via Swagger UI
